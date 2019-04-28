@@ -93,14 +93,14 @@ export default class Instagram extends Component {
   }
 
   renderWebview() {
-    const { clientId, redirectUrl, scopes, responseType } = this.props
+    const { clientId, redirectUrl, scopes, responseType, csfr } = this.props
     const { key } = this.state
     return (
       <WebView
         {...this.props}
         key={key}
         style={[styles.webView, this.props.styles.webView]}
-        source={{ uri: `https://api.instagram.com/oauth/authorize/?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=${responseType}&scope=${scopes.join('+')}` }}
+        source={{ uri: `https://api.instagram.com/oauth/authorize/?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=${responseType}&scope=${scopes.join('+')}&state=${csfr}` }}
         // scalesPageToFit
         startInLoadingState
         onNavigationStateChange={this._onNavigationStateChange.bind(this)}
@@ -149,6 +149,7 @@ const propTypes = {
   containerStyle: PropTypes.object,
   wrapperStyle: PropTypes.object,
   closeStyle: PropTypes.object,
+  csfr: PropTypes.string,
 }
 
 const defaultProps = {
@@ -169,6 +170,7 @@ const defaultProps = {
     console.debug(failureJson)
   },
   responseType: 'token',
+  csfr: 'csfr0,csfr1'
 }
 
 Instagram.propTypes = propTypes
